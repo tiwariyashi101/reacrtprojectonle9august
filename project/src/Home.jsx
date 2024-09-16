@@ -9,6 +9,10 @@ const Home = () => {
   const [product, setProduct] = useState([]);
   const [search, setSearch] = useState("");
 
+
+let idsArray=useSelector((state)=>state.cart.ids)
+console.log(idsArray)
+
   // Fetch data from the API
   let getData = async () => {
     let data = await fetch('https://dummyjson.com/products');
@@ -44,10 +48,8 @@ const Home = () => {
     return <Shimmer />;
   }
 
-let idsArray=useSelector((state)=>state)
-console.log(idsArray)
 
-  let Added=AddedProduct(Card)
+  let AddedComponent=AddedProduct(Card)
 
   return (
     <>
@@ -62,12 +64,12 @@ console.log(idsArray)
       />
       <button className="btn btn-active" onClick={searchProduct}>Search</button>
        <div className="flex flex-wrap gap-5">
-        {
-          product.map((obj)=>
-            <Card obj={obj} key={obj.id}></Card>
-         
-          )
-        }
+       {productArray.map((obj) => (
+
+  idsArray.find((id)=>obj.id == id ) == undefined ? <Card obj={obj} key={obj.id}></Card>:
+  <AddedComponent obj={obj} key={obj.id}></AddedComponent> 
+
+))}
        </div> 
     </>
   );

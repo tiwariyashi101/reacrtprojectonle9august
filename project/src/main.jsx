@@ -2,7 +2,6 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.jsx';
 import About from './About.jsx';
-import Contact from './Cart.jsx';
 import Cart from './Cart.jsx';
 import Single from './SingleProduct.jsx';
 import { Suspense ,lazy} from 'react';
@@ -12,6 +11,7 @@ import { ThemeProvider } from './utility/ThemeContext.jsx'; // Import ThemeProvi
  
 import './index.css';
 import { Provider } from 'react-redux';
+import Sign from './Sign.jsx';
 
 
 // Define the router configuration
@@ -37,7 +37,13 @@ element:(<Suspense fallback={<h1>...loading</h1>}>
 <Food></Food>
 </Suspense>)
   }
-]);
+,{
+  path:'/login',
+  element:<Sign></Sign>
+},{
+  path:'/sign',
+  element:<Sign></Sign>
+}]);
 
 
 createRoot(document.getElementById('root')).render(

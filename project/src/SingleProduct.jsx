@@ -1,51 +1,53 @@
-// import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import Shimmer from "./Shimmerui"
-import Context from "./utility/useContextApi"
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import Shimmer from "./Shimmerui";
+import Context from "./utility/useContextApi";
+import { useDispatch } from "react-redux";
+import { clearCart } from "./utility/CartSlice";
+import ReviewComp from "./ReviewComp";
 
-const Single=()=>{
-// const [obj,setObj]=useState(null)
-  let {id}=useParams()
+const Single = () => {
+  let { id } = useParams();
+  let obj = Context(id);
+  const dispatch = useDispatch();
+  
+  // State to track which review is shown
+  const [show, setShow] = useState(null);
 
-let obj=Context(id)
+  const clickHandle = () => {
+    dispatch(clearCart());
+  };
 
-// let getData=async()=>{
-//   let data=await fetch(`https://dummyjson.com/products/${id}`);
-//   let obj = await data.json();
-//   setObj(obj)
+  if (obj == null) {
+    return <Shimmer />;
+  }
 
-// }
+  let { title, description, images, reviews } = obj;
 
-// useEffect(()=>{
-//   getData();
-// },[id])
-
-
-
-if(obj==null){
-  return <Shimmer></Shimmer>
-}
-
-let {title,description,images}=obj
   return (
     <>
-  <div className="card bg-base-100 w-96 shadow-xl">
-  <figure>
-    <img
-      src={images}
-      alt="Shoes" />
-  </figure>
-  <div className="card-body">
-    <h2 className="card-title">{title}</h2>
-    <p>I{description}</p>
-    <div className="card-actions justify-end">
-      <button className="btn btn-primary">Buy Now</button>
-    </div>
-  </div>
-</div>
-
-
+      <div className="card bg-base-100 w-96 shadow-xl">
+        <figure>
+          <img src={images} alt="Product" />
+        </figure>
+        <div className="card-body">
+          <h2 className="card-title">{title}</h2>
+          <p>{description}</p>
+          <div className="card-actions justify-end">
+            <button className="btn btn-primary" onClick={clickHandle}>
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="reviewBox h-1/3 w-4/5 border-2 border-red-400 mt-9 flex flex-col items-center">
+        {reviews.map((obj, idx) => (
+          <ReviewComp key={idx} obj={obj} idx={idx} show={show} setShow={setShow} />
+        ))}
+      </div>
     </>
-  )
-}
-export default Single
+  );
+};
+
+export default Single;
+

@@ -5,13 +5,13 @@ const {Schema,model}=mongoose;
 
 const userSchema=new Schema(
   {
-    userName:{
+    name:{
       type:String,
       required:true
     },Password:{
       type:String,
       required:true
-    },Number:{
+    },email:{
       type:String,
       required:true,
       trim:true
